@@ -8,8 +8,7 @@
     "icon": "./assets/icon.png",
     "platforms": [
       "ios",
-      "android",
-      "web"
+      "android"
     ],
     "splash": {
       "image": "./assets/splash.png",
@@ -22,7 +21,10 @@
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.pregnancynutrition.coach",
-      "buildNumber": "1"
+      "buildNumber": "1",
+      "infoPlist": {
+        "ITSAppUsesNonExemptEncryption": false
+      }
     },
     "android": {
       "package": "com.pregnancynutrition.coach",

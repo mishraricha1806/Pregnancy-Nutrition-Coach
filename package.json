@@ -8,6 +8,10 @@
     "ios": "expo start --ios",
     "android": "expo start --android",
     "generate-assets": "node scripts/generate-assets.js",
+    "doctor": "npx expo-doctor",
+    "export:android": "npx expo export --platform android --output-dir dist-smoke",
+    "export:ios": "npx expo export --platform ios --output-dir dist-smoke-ios",
+    "build:android:preview": "npx eas build --platform android --profile preview",
     "build:android": "npx eas build --platform android --profile production",
     "build:ios": "npx eas build --platform ios --profile production"
   },

@@ -49,3 +49,5 @@ npm run build:android
 The Play Store requires a privacy policy URL, store listing, screenshots, content rating, data safety form, app signing, and review submission through Google Play Console.
 
 See [free-premium-project-prototype.md](free-premium-project-prototype.md) for the product split between free and premium features.
+
+See [android-ios-product-build.md](android-ios-product-build.md) for Android and iOS product build steps.
