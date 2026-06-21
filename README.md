@@ -51,3 +51,5 @@ The Play Store requires a privacy policy URL, store listing, screenshots, conten
 See [free-premium-project-prototype.md](free-premium-project-prototype.md) for the product split between free and premium features.
 
 See [android-ios-product-build.md](android-ios-product-build.md) for Android and iOS product build steps.
+
+See [app-store-submission.md](app-store-submission.md) for App Store Connect metadata, privacy label draft, and iOS submission steps.

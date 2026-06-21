@@ -1,4 +1,4 @@
-# Android and iOS Product Build Guide
+ # Android and iOS Product Build Guide
 
 This project is configured as an Expo app for Android and iOS production builds.
 
