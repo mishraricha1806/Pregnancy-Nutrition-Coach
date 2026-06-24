@@ -5,6 +5,8 @@ Cross-platform iOS and Android pregnancy nutrition coaching app built with Expo 
 ## Features
 
 - Profile personalization by age, height, pre-pregnancy weight, current weight, pregnancy month, due date, pregnancy count, baby count, activity, allergies, and cuisine.
+- Visual home dashboard with pregnancy nutrition hero image, quick actions, and bottom navigation.
+- Multi-step onboarding for welcome, safety, profile, diet, and optional reports.
 - Diet categories: vegetarian, non-vegetarian, eggetarian, and vegan.
 - Lab-aware guidance for hemoglobin, ferritin, vitamin B12, vitamin D, glucose, blood pressure, gestational diabetes, thyroid disorder, and severe nausea.
 - BMI and pregnancy weight-gain range calculation.
@@ -15,8 +17,10 @@ Cross-platform iOS and Android pregnancy nutrition coaching app built with Expo 
 - Auto grocery list by diet category.
 - Symptom manager for nausea, acidity, constipation, swelling, and cravings.
 - Daily checklist for hydration, protein, iron, calcium, fruits, vegetables, prenatal supplement reminder, and movement.
+- 7-day checklist history.
+- Settings area for profile, reports, symptoms, premium, and local data reset.
 - Safety alerts and doctor-review boundaries.
-- Free and premium prototype screen for product planning.
+- Premium coming-soon screen with roadmap cards, pricing prototype, and clear note that no subscription or payment is enabled.
 
 ## Run
 

@@ -8,7 +8,8 @@
     "icon": "./assets/icon.png",
     "platforms": [
       "ios",
-      "android"
+      "android",
+      "web"
     ],
     "splash": {
       "image": "./assets/splash.png",

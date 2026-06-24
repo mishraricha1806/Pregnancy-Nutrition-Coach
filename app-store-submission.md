@@ -36,7 +36,7 @@ EAS will ask for Apple Developer credentials and signing setup on the first iOS 
 - Category: Health & Fitness
 - Age rating: complete Apple's questionnaire honestly. The app contains health/nutrition guidance but no explicit content.
 - Price: Free for the first version.
-- In-app purchases: Not enabled in the current build. Premium is a prototype/roadmap screen only.
+- In-app purchases: Not enabled in the current build. Premium is a coming-soon roadmap and pricing prototype screen only.
 
 ## Subtitle
 
@@ -64,7 +64,7 @@ Free features include:
 
 Medical disclaimer:
 
-Pregnancy Nutrition Coach provides food guidance only. It does not diagnose, prescribe medicines, prescribe supplement doses, replace an OB/GYN, or handle emergencies. Always consult your OB/GYN for abnormal reports, medicines, supplements, scans, or urgent symptoms.
+Pregnancy Nutrition Coach provides general pregnancy nutrition suggestions only. It is not medical advice, diagnosis, treatment, or a substitute for an OB/GYN, dietitian, or emergency care. It does not prescribe medicines or supplement doses. Always consult your OB/GYN for abnormal reports, high-risk pregnancy, medicines, supplements, scans, severe symptoms, or urgent concerns.
 
 ## Keywords
 
@@ -112,10 +112,10 @@ Suggested screenshot flow:
 3. Plan page with meal plan and swaps.
 4. Grocery list.
 5. Journey page.
-6. Premium prototype page.
+6. Premium coming-soon roadmap page.
 
 ## Review Notes
 
 Suggested review note:
 
-This app provides pregnancy food-planning support only. It does not diagnose, prescribe medicines or supplements, replace an OB/GYN, or handle emergencies. All profile and report values are stored locally on device using secure storage. No account, backend, ads, analytics, or tracking are enabled in this version.
+This app provides general pregnancy nutrition suggestions only. It is not medical advice, diagnosis, treatment, or a substitute for an OB/GYN, dietitian, or emergency care. It does not prescribe medicines or supplement doses. All profile and report values are stored locally on device using secure storage. No account, backend, ads, analytics, or tracking are enabled in this version.

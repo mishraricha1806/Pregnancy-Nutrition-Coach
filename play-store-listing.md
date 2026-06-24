@@ -14,6 +14,8 @@ Pregnancy Nutrition Coach helps expecting mothers plan daily meals from month 1 
 
 Features:
 
+- Visual home dashboard with quick access to meal plan, grocery list, pregnancy journey, symptoms, and daily tracker.
+- Multi-step onboarding for safety, profile setup, diet preference, and optional reports.
 - Month-wise pregnancy nutrition focus.
 - Diet categories: vegetarian, non-vegetarian, eggetarian, and vegan.
 - BMI and pregnancy weight-gain guidance.
@@ -23,12 +25,13 @@ Features:
 - Lab-aware food alerts for iron, B12, vitamin D, glucose, and blood pressure.
 - Symptom tips for nausea, acidity, constipation, swelling, and cravings.
 - Daily checklist for hydration, protein, iron, calcium, fruits, vegetables, prenatal reminder, and movement.
-- Free app with premium roadmap prototype.
+- 7-day checklist progress history.
+- Free app with premium coming-soon roadmap. No subscription or payment is enabled in this build.
 - Clear doctor-review reminders and urgent-symptom warnings.
 
 Medical disclaimer:
 
-Pregnancy Nutrition Coach provides food guidance only. It does not diagnose, prescribe medicines, prescribe supplement doses, replace an OB/GYN, or handle emergencies. Always consult your OB/GYN for abnormal reports, medicines, supplements, scans, or urgent symptoms.
+Pregnancy Nutrition Coach provides general pregnancy nutrition suggestions only. It is not medical advice, diagnosis, treatment, or a substitute for an OB/GYN, dietitian, or emergency care. It does not prescribe medicines or supplement doses. Always consult your OB/GYN for abnormal reports, high-risk pregnancy, medicines, supplements, scans, severe symptoms, or urgent concerns.
 
 ## Data Safety Draft
 

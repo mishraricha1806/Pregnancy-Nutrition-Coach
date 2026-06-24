@@ -19,7 +19,9 @@ Current version: profile and report values are stored on the user's device using
 
 ## Health Disclaimer
 
-The app gives food guidance only. It does not diagnose, prescribe medicines, prescribe supplement doses, replace an OB/GYN, or handle emergencies. Users should consult their OB/GYN for abnormal reports, high-risk pregnancy, medicines, supplements, scans, or urgent symptoms.
+The app gives general pregnancy nutrition suggestions only. It is not medical advice, diagnosis, treatment, or a substitute for an OB/GYN, dietitian, or emergency care. It does not prescribe medicines, prescribe supplement doses, replace an OB/GYN, or handle emergencies.
+
+Users should consult their OB/GYN or qualified clinician for abnormal reports, high-risk pregnancy, gestational diabetes, blood pressure concerns, thyroid issues, severe vomiting, pain, bleeding, reduced fetal movement, medicines, supplements, scans, or urgent symptoms.
 
 ## User Control
 

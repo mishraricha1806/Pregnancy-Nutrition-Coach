@@ -16,7 +16,11 @@
 - Privacy policy draft.
 - Android and iOS bundle smoke tests.
 - Journey, meal swap, and grocery list engagement features.
-- Free/premium feature prototype screen.
+- Premium coming-soon screen with roadmap cards, pricing prototype, and clear note that no subscription or payment is enabled.
+- Visual home dashboard, generated hero image asset, and bottom navigation.
+- Multi-step onboarding.
+- Settings screen and 7-day tracker history.
+- Reusable "nutrition guidance only, not medical advice" notice across onboarding, home, plan, reports, grocery, symptoms, tracker, and settings.
 
 ## Required Before Play Store Submission
 

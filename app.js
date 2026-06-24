@@ -9,8 +9,39 @@ import {
   Text,
   TextInput,
   TouchableOpacity,
-  View
+  View,
+  Image,
+  ImageBackground
 } from "react-native";
+import {
+  Apple,
+  Baby,
+  CalendarDays,
+  ChartNoAxesColumnIncreasing,
+  Check,
+  ChefHat,
+  ClipboardList,
+  Droplets,
+  FileText,
+  HeartPulse,
+  Home,
+  Leaf,
+  Lock,
+  Milk,
+  NotebookTabs,
+  Pill,
+  RefreshCw,
+  Salad,
+  ShoppingBasket,
+  Sparkles,
+  Stethoscope,
+  Target,
+  Utensils,
+  Wheat,
+  Zap
+} from "lucide-react-native";
+
+const HERO_IMAGE = require("./assets/pregnancy-nutrition-hero.png");
 
 const COLORS = {
   ink: "#1f2933",
@@ -26,7 +57,44 @@ const COLORS = {
   softLeaf: "#e8f2ec",
   softBerry: "#f7e8ee",
   softGold: "#fff2d7",
-  softBlue: "#eef5fa"
+  softBlue: "#eef5fa",
+  ivory: "#fffdf8",
+  blush: "#f9edf1"
+};
+
+const MAIN_TABS = ["Home", "Plan", "Journey", "Grocery", "Tracker"];
+const MORE_TABS = ["Profile", "Reports", "Symptoms", "Premium", "Settings"];
+
+const TAB_ICONS = {
+  Home,
+  Plan: Utensils,
+  Journey: Baby,
+  Grocery: ShoppingBasket,
+  Tracker: ClipboardList,
+  Profile: NotebookTabs,
+  Reports: FileText,
+  Symptoms: HeartPulse,
+  Premium: Sparkles,
+  Settings: Stethoscope
+};
+
+const MEAL_ICONS = {
+  Early: Droplets,
+  Breakfast: ChefHat,
+  "Mid-morning": Apple,
+  Lunch: Salad,
+  Snack: Wheat,
+  Dinner: Utensils,
+  Bedtime: Milk
+};
+
+const METRIC_ICONS = {
+  BMI: Target,
+  "Weight trend": ChartNoAxesColumnIncreasing,
+  Energy: Zap,
+  "Target gain": Target,
+  Diet: Leaf,
+  Checklist: Check
 };
 
 const INITIAL_PROFILE = {
@@ -80,9 +148,13 @@ const INITIAL_TRACKER = {
 
 const STORAGE_KEYS = {
   consent: "pnc.consentAccepted",
+  onboarding: "pnc.onboardingComplete",
   profile: "pnc.secure.profile",
-  tracker: "pnc.tracker"
+  tracker: "pnc.tracker",
+  trackerHistory: "pnc.trackerHistory"
 };
+
+const ONBOARDING_STEPS = ["Welcome", "Safety", "Profile", "Diet", "Reports"];
 
 const DIETS = [
   ["vegetarian", "Vegetarian"],
@@ -369,27 +441,33 @@ const FREE_FEATURES = [
 const PREMIUM_FEATURES = [
   {
     title: "7-day smart meal planner",
-    description: "Auto-build a weekly meal calendar with swaps, leftovers, grocery quantities, and cuisine preference."
+    description: "Auto-build a weekly meal calendar with swaps, leftovers, grocery quantities, and cuisine preference.",
+    icon: CalendarDays
   },
   {
     title: "Report trend charts",
-    description: "Track hemoglobin, ferritin, B12, vitamin D, glucose, BP, and weight changes over time."
+    description: "Track hemoglobin, ferritin, B12, vitamin D, glucose, BP, and weight changes over time.",
+    icon: ChartNoAxesColumnIncreasing
   },
   {
     title: "Condition-focused plans",
-    description: "Separate anemia-friendly, GDM-friendly, acidity-friendly, constipation-friendly, and high-BP cautious plans."
+    description: "Separate anemia-friendly, GDM-friendly, acidity-friendly, constipation-friendly, and high-BP cautious plans.",
+    icon: HeartPulse
   },
   {
     title: "Family sharing",
-    description: "A simple partner/family view with grocery tasks, hydration reminders, and doctor-visit prep."
+    description: "A simple partner/family view with grocery tasks, hydration reminders, and doctor-visit prep.",
+    icon: ShoppingBasket
   },
   {
     title: "Doctor visit kit",
-    description: "Appointment notes, questions to ask, report checklist, and supplement reminder timing."
+    description: "Appointment notes, questions to ask, report checklist, and supplement reminder timing.",
+    icon: Stethoscope
   },
   {
     title: "Postpartum nutrition mode",
-    description: "Breastfeeding, C-section recovery, iron/protein recovery, and first 6-week meal support."
+    description: "Breastfeeding, C-section recovery, iron/protein recovery, and first 6-week meal support.",
+    icon: Baby
   }
 ];
 
@@ -398,6 +476,12 @@ const PRICING_PROTOTYPE = [
   ["Premium Monthly", "Advanced planning and tracking", "Suggested: INR 199/month"],
   ["Premium Yearly", "Best value for full pregnancy journey", "Suggested: INR 999/year"]
 ];
+
+const MEDICAL_NOTE =
+  "This app gives general pregnancy nutrition suggestions only. It is not medical advice, diagnosis, treatment, or a substitute for your OB/GYN, dietitian, or emergency care.";
+
+const DOCTOR_NOTE =
+  "Always review abnormal reports, medicines, supplement doses, high-risk pregnancy, diabetes, blood pressure concerns, thyroid issues, severe vomiting, pain, bleeding, or reduced fetal movement with your doctor.";
 
 const SYMPTOM_TIPS = {
   nausea: "Small frequent meals, dry toast or crackers before getting up, fluids between meals, and doctor review if vomiting prevents fluids.",
@@ -431,6 +515,15 @@ function validationMessages(profile) {
   if (!hasNumber(profile.month) || month < 1 || month > 9) messages.push("Enter pregnancy month from 1 to 9.");
 
   return messages;
+}
+
+function todayKey() {
+  return new Date().toISOString().slice(0, 10);
+}
+
+function friendlyDate(dateKey) {
+  const date = new Date(`${dateKey}T00:00:00`);
+  return date.toLocaleDateString(undefined, { month: "short", day: "numeric" });
 }
 
 function monthFrom(profile) {
@@ -594,39 +687,85 @@ function Toggle({ label, active, onPress }) {
   return (
     <TouchableOpacity style={[styles.toggle, active && styles.toggleActive]} onPress={onPress}>
       <View style={[styles.checkbox, active && styles.checkboxActive]}>
-        {active ? <Text style={styles.checkMark}>✓</Text> : null}
+        {active ? <Check size={14} color="#ffffff" strokeWidth={3} /> : null}
       </View>
       <Text style={[styles.toggleText, active && styles.toggleTextActive]}>{label}</Text>
     </TouchableOpacity>
   );
 }
 
-function Card({ title, children }) {
+function IconBubble({ icon: Icon, tone = "leaf", size = 18 }) {
+  return (
+    <View style={[styles.iconBubble, styles[`iconBubble${tone}`]]}>
+      <Icon size={size} color={tone === "gold" ? COLORS.gold : tone === "berry" ? COLORS.berry : tone === "sky" ? COLORS.sky : COLORS.leaf} strokeWidth={2.4} />
+    </View>
+  );
+}
+
+function Card({ title, children, icon: Icon, tone = "leaf" }) {
   return (
     <View style={styles.card}>
-      <Text style={styles.cardTitle}>{title}</Text>
+      <View style={styles.cardHeader}>
+        {Icon ? <IconBubble icon={Icon} tone={tone} size={17} /> : null}
+        <Text style={styles.cardTitle}>{title}</Text>
+      </View>
       {children}
     </View>
   );
 }
 
-function Metric({ label, value }) {
+function Metric({ label, value, icon }) {
+  const Icon = icon || METRIC_ICONS[label] || Target;
   return (
     <View style={styles.metric}>
-      <Text style={styles.metricLabel}>{label}</Text>
+      <View style={styles.metricHeader}>
+        <Icon size={16} color={COLORS.gold} strokeWidth={2.4} />
+        <Text style={styles.metricLabel}>{label}</Text>
+      </View>
       <Text style={styles.metricValue}>{value}</Text>
     </View>
   );
 }
 
+function QuickCard({ title, body, action, onPress, tone = "leaf", icon }) {
+  const Icon = icon || Sparkles;
+  return (
+    <TouchableOpacity style={[styles.quickCard, styles[`quickCard${tone}`]]} onPress={onPress}>
+      <IconBubble icon={Icon} tone={tone} size={21} />
+      <Text style={styles.quickTitle}>{title}</Text>
+      <Text style={styles.quickBody}>{body}</Text>
+      <View style={styles.quickActionRow}>
+        <Text style={styles.quickAction}>{action}</Text>
+        <RefreshCw size={13} color={COLORS.leaf} strokeWidth={2.5} />
+      </View>
+    </TouchableOpacity>
+  );
+}
+
+function MedicalNotice({ compact = false }) {
+  return (
+    <View style={[styles.medicalNotice, compact && styles.medicalNoticeCompact]}>
+      <Stethoscope size={18} color={COLORS.danger} strokeWidth={2.6} />
+      <View style={styles.medicalNoticeTextWrap}>
+        <Text style={styles.medicalNoticeTitle}>Nutrition guidance only</Text>
+        <Text style={styles.medicalNoticeText}>{MEDICAL_NOTE}</Text>
+        {!compact ? <Text style={styles.medicalNoticeText}>{DOCTOR_NOTE}</Text> : null}
+      </View>
+    </View>
+  );
+}
+
 export default function App() {
-  const [activeTab, setActiveTab] = useState("Plan");
+  const [activeTab, setActiveTab] = useState("Home");
   const [profile, setProfile] = useState(INITIAL_PROFILE);
   const [tracker, setTracker] = useState(INITIAL_TRACKER);
+  const [trackerHistory, setTrackerHistory] = useState({});
   const [symptom, setSymptom] = useState("nausea");
   const [mealSwapIndexes, setMealSwapIndexes] = useState({});
   const [hydrated, setHydrated] = useState(false);
   const [consentAccepted, setConsentAccepted] = useState(false);
+  const [onboardingComplete, setOnboardingComplete] = useState(false);
+  const [onboardingStep, setOnboardingStep] = useState(0);
 
   const plan = useMemo(() => calculatePlan(profile), [profile]);
   const completed = Object.values(tracker).filter(Boolean).length;
@@ -636,17 +775,26 @@ export default function App() {
 
     async function loadSavedState() {
       try {
-        const [savedConsent, savedProfile, savedTracker] = await Promise.all([
+        const [savedConsent, savedOnboarding, savedProfile, savedTracker, savedTrackerHistory] = await Promise.all([
           AsyncStorage.getItem(STORAGE_KEYS.consent),
+          AsyncStorage.getItem(STORAGE_KEYS.onboarding),
           SecureStore.getItemAsync(STORAGE_KEYS.profile),
-          AsyncStorage.getItem(STORAGE_KEYS.tracker)
+          AsyncStorage.getItem(STORAGE_KEYS.tracker),
+          AsyncStorage.getItem(STORAGE_KEYS.trackerHistory)
         ]);
 
         if (!mounted) return;
 
         setConsentAccepted(savedConsent === "true");
+        setOnboardingComplete(savedOnboarding === "true");
         if (savedProfile) setProfile({ ...INITIAL_PROFILE, ...JSON.parse(savedProfile) });
-        if (savedTracker) setTracker({ ...INITIAL_TRACKER, ...JSON.parse(savedTracker) });
+        if (savedTrackerHistory) {
+          const parsedHistory = JSON.parse(savedTrackerHistory);
+          setTrackerHistory(parsedHistory);
+          setTracker({ ...INITIAL_TRACKER, ...(parsedHistory[todayKey()] || {}) });
+        } else if (savedTracker) {
+          setTracker({ ...INITIAL_TRACKER, ...JSON.parse(savedTracker) });
+        }
       } catch {
         if (mounted) {
           setProfile(INITIAL_PROFILE);
@@ -671,6 +819,12 @@ export default function App() {
   useEffect(() => {
     if (!hydrated || !consentAccepted) return;
     AsyncStorage.setItem(STORAGE_KEYS.tracker, JSON.stringify(tracker));
+    const updatedHistory = {
+      ...trackerHistory,
+      [todayKey()]: tracker
+    };
+    setTrackerHistory(updatedHistory);
+    AsyncStorage.setItem(STORAGE_KEYS.trackerHistory, JSON.stringify(updatedHistory));
   }, [consentAccepted, hydrated, tracker]);
 
   async function acceptConsent() {
@@ -678,13 +832,25 @@ export default function App() {
     setConsentAccepted(true);
   }
 
+  async function completeOnboarding() {
+    await Promise.all([
+      AsyncStorage.setItem(STORAGE_KEYS.consent, "true"),
+      AsyncStorage.setItem(STORAGE_KEYS.onboarding, "true")
+    ]);
+    setConsentAccepted(true);
+    setOnboardingComplete(true);
+    setActiveTab("Home");
+  }
+
   async function resetLocalData() {
     await Promise.all([
       SecureStore.deleteItemAsync(STORAGE_KEYS.profile),
-      AsyncStorage.removeItem(STORAGE_KEYS.tracker)
+      AsyncStorage.removeItem(STORAGE_KEYS.tracker),
+      AsyncStorage.removeItem(STORAGE_KEYS.trackerHistory)
     ]);
     setProfile(INITIAL_PROFILE);
     setTracker(INITIAL_TRACKER);
+    setTrackerHistory({});
   }
 
   function loadSampleProfile() {
@@ -715,7 +881,7 @@ export default function App() {
   function renderProfile() {
     return (
       <>
-        <Card title="Mother profile">
+        <Card title="Mother profile" icon={NotebookTabs} tone="leaf">
           <View style={styles.twoCol}>
             <Field label="Age" value={profile.age} onChangeText={(v) => setProfileValue("age", v)} keyboardType="numeric" />
             <Field label="Height (cm)" value={profile.height} onChangeText={(v) => setProfileValue("height", v)} keyboardType="numeric" />
@@ -728,7 +894,7 @@ export default function App() {
           <ChoiceGroup label="Baby count" options={BABY_COUNTS} value={profile.babyCount} onChange={(v) => setProfileValue("babyCount", v)} />
           <ChoiceGroup label="Activity" options={ACTIVITY} value={profile.activity} onChange={(v) => setProfileValue("activity", v)} />
         </Card>
-        <Card title="Food preference">
+        <Card title="Food preference" icon={Salad} tone="gold">
           <ChoiceGroup label="Diet category" options={DIETS} value={profile.diet} onChange={(v) => setProfileValue("diet", v)} />
           <Field label="Cuisine preference" value={profile.cuisine} onChangeText={(v) => setProfileValue("cuisine", v)} />
           <Field label="Allergies / foods to avoid" value={profile.allergies} onChangeText={(v) => setProfileValue("allergies", v)} placeholder="Peanut, milk, gluten..." />
@@ -737,10 +903,45 @@ export default function App() {
     );
   }
 
-  function renderReports() {
+  function renderOnboardingProfileBasics() {
+    return (
+      <Card title="Profile basics" icon={NotebookTabs} tone="leaf">
+        <View style={styles.twoCol}>
+          <Field label="Age" value={profile.age} onChangeText={(v) => setProfileValue("age", v)} keyboardType="numeric" />
+          <Field label="Height (cm)" value={profile.height} onChangeText={(v) => setProfileValue("height", v)} keyboardType="numeric" />
+          <Field label="Pre-pregnancy weight (kg)" value={profile.preWeight} onChangeText={(v) => setProfileValue("preWeight", v)} keyboardType="decimal-pad" />
+          <Field label="Current weight (kg)" value={profile.currentWeight} onChangeText={(v) => setProfileValue("currentWeight", v)} keyboardType="decimal-pad" />
+          <Field label="Pregnancy month" value={profile.month} onChangeText={(v) => setProfileValue("month", v)} keyboardType="numeric" />
+          <Field label="Due date" value={profile.dueDate} onChangeText={(v) => setProfileValue("dueDate", v)} placeholder="DD/MM/YYYY" />
+        </View>
+      </Card>
+    );
+  }
+
+  function renderOnboardingDiet() {
     return (
       <>
-        <Card title="Lab reports">
+        <Card title="Food preference" icon={Salad} tone="gold">
+          <ChoiceGroup label="Diet category" options={DIETS} value={profile.diet} onChange={(v) => setProfileValue("diet", v)} />
+          <Field label="Cuisine preference" value={profile.cuisine} onChangeText={(v) => setProfileValue("cuisine", v)} />
+          <Field label="Allergies / foods to avoid" value={profile.allergies} onChangeText={(v) => setProfileValue("allergies", v)} placeholder="Peanut, milk, gluten..." />
+        </Card>
+        <Card title="Pregnancy details" icon={Baby} tone="berry">
+          <ChoiceGroup label="Pregnancy count" options={PREGNANCY_COUNTS} value={profile.pregnancyCount} onChange={(v) => setProfileValue("pregnancyCount", v)} />
+          <ChoiceGroup label="Baby count" options={BABY_COUNTS} value={profile.babyCount} onChange={(v) => setProfileValue("babyCount", v)} />
+          <ChoiceGroup label="Activity" options={ACTIVITY} value={profile.activity} onChange={(v) => setProfileValue("activity", v)} />
+        </Card>
+      </>
+    );
+  }
+
+  function renderOnboardingReports() {
+    return (
+      <>
+        <Card title="Optional reports" icon={FileText} tone="sky">
+          <Text style={styles.helperText}>
+            You can skip this now. Adding reports helps the app show food alerts for anemia, B12, vitamin D, glucose, and BP.
+          </Text>
           <View style={styles.twoCol}>
             <Field label="Hemoglobin g/dL" value={profile.hemoglobin} onChangeText={(v) => setProfileValue("hemoglobin", v)} keyboardType="decimal-pad" />
             <Field label="Ferritin" value={profile.ferritin} onChangeText={(v) => setProfileValue("ferritin", v)} keyboardType="decimal-pad" />
@@ -750,7 +951,178 @@ export default function App() {
           </View>
           <ChoiceGroup label="Blood pressure" options={BP} value={profile.bp} onChange={(v) => setProfileValue("bp", v)} />
         </Card>
-        <Card title="Medical flags">
+        <Card title="Medical flags" icon={HeartPulse} tone="berry">
+          <Toggle label="Gestational diabetes" active={profile.gestationalDiabetes} onPress={() => setProfileValue("gestationalDiabetes", !profile.gestationalDiabetes)} />
+          <Toggle label="Thyroid disorder" active={profile.thyroid} onPress={() => setProfileValue("thyroid", !profile.thyroid)} />
+          <Toggle label="Severe nausea or vomiting" active={profile.severeNausea} onPress={() => setProfileValue("severeNausea", !profile.severeNausea)} />
+        </Card>
+      </>
+    );
+  }
+
+  function onboardingCanContinue() {
+    if (onboardingStep !== 2) return true;
+    return validationMessages(profile).length === 0;
+  }
+
+  function renderOnboardingStep() {
+    if (onboardingStep === 0) {
+      return (
+        <>
+          <ImageBackground source={HERO_IMAGE} style={styles.onboardingHero} imageStyle={styles.heroImage}>
+            <View style={styles.heroOverlay}>
+              <Text style={styles.heroKicker}>Pregnancy Nutrition Coach</Text>
+              <Text style={styles.heroTitle}>Food support from month 1 to due date</Text>
+              <Text style={styles.heroText}>Personalized meal plans, grocery lists, symptom tips, and safe doctor-review reminders.</Text>
+            </View>
+          </ImageBackground>
+          <View style={styles.quickGrid}>
+            <QuickCard title="Personalized" body="Age, weight, pregnancy month, diet, and reports." action="Set up" onPress={() => setOnboardingStep(1)} tone="leaf" icon={Sparkles} />
+            <QuickCard title="Daily useful" body="Meal plan, grocery, journey, symptoms, tracker." action="Explore" onPress={() => setOnboardingStep(1)} tone="gold" icon={CalendarDays} />
+          </View>
+        </>
+      );
+    }
+
+    if (onboardingStep === 1) {
+      return (
+        <Card title="Safety first" icon={Stethoscope} tone="sky">
+          <MedicalNotice />
+          {[
+            "Use the meal plans and alerts as supportive education, not as a clinical decision.",
+            "Do not change medicines, supplements, insulin, thyroid medicine, iron, calcium, aspirin, or any treatment based only on this app.",
+            "If symptoms feel urgent, contact your doctor or emergency services immediately.",
+            "Your profile and report values are stored securely on this device."
+          ].map((item) => (
+            <View key={item} style={styles.alert}>
+              <Text style={styles.alertText}>{item}</Text>
+            </View>
+          ))}
+        </Card>
+      );
+    }
+
+    if (onboardingStep === 2) return renderOnboardingProfileBasics();
+    if (onboardingStep === 3) return renderOnboardingDiet();
+    return renderOnboardingReports();
+  }
+
+  function renderHome() {
+    const validation = validationMessages(profile);
+    const needsProfile = validation.length > 0;
+
+    return (
+      <>
+        <ImageBackground source={HERO_IMAGE} style={styles.hero} imageStyle={styles.heroImage}>
+          <View style={styles.heroOverlay}>
+            <Text style={styles.heroKicker}>Month {plan.month} nutrition</Text>
+            <Text style={styles.heroTitle}>
+              {needsProfile ? "Build a safer pregnancy food rhythm" : `${plan.trimester} meal focus`}
+            </Text>
+            <Text style={styles.heroText}>
+              {needsProfile
+                ? "Set your profile once, then get meal plans, grocery lists, symptom tips, and report-aware food alerts."
+                : `${MEAL_PLANS[profile.diet].label} guidance with ${plan.focus.slice(0, 3).join(", ")}.`}
+            </Text>
+          </View>
+        </ImageBackground>
+
+        <MedicalNotice compact />
+
+        <View style={styles.homeMetrics}>
+          <Metric label="Diet" value={MEAL_PLANS[profile.diet].label} icon={Leaf} />
+          <Metric label="Checklist" value={`${completed}/8 done`} icon={ClipboardList} />
+        </View>
+
+        {needsProfile ? (
+          <Card title="Start here" icon={NotebookTabs} tone="leaf">
+            <Text style={styles.helperText}>
+              Complete the required profile fields so the app can calculate weight trend and personalize your food plan.
+            </Text>
+            <TouchableOpacity style={styles.primaryAction} onPress={() => setActiveTab("Profile")}>
+              <Text style={styles.primaryActionText}>Complete profile</Text>
+            </TouchableOpacity>
+            {__DEV__ ? (
+              <TouchableOpacity style={styles.secondaryAction} onPress={loadSampleProfile}>
+                <Text style={styles.secondaryActionText}>Load sample profile</Text>
+              </TouchableOpacity>
+            ) : null}
+          </Card>
+        ) : (
+          <Card title="Today at a glance" icon={Sparkles} tone="berry">
+            <View style={styles.tagWrap}>
+              {plan.focus.map((item) => (
+                <Text key={item} style={styles.tag}>{item}</Text>
+              ))}
+            </View>
+          </Card>
+        )}
+
+        <View style={styles.quickGrid}>
+          <QuickCard
+            title="Meal Plan"
+            body="Breakfast, lunch, snacks, dinner, and swaps."
+            action="Open plan"
+            onPress={() => setActiveTab("Plan")}
+            tone="leaf"
+            icon={Utensils}
+          />
+          <QuickCard
+            title="Grocery"
+            body="Shopping list matched to diet type."
+            action="Build list"
+            onPress={() => setActiveTab("Grocery")}
+            tone="gold"
+            icon={ShoppingBasket}
+          />
+          <QuickCard
+            title="Journey"
+            body="Baby growth, mother focus, and prep."
+            action="View month"
+            onPress={() => setActiveTab("Journey")}
+            tone="berry"
+            icon={Baby}
+          />
+          <QuickCard
+            title="Symptoms"
+            body="Nausea, acidity, constipation, swelling."
+            action="Get tips"
+            onPress={() => setActiveTab("Symptoms")}
+            tone="sky"
+            icon={HeartPulse}
+          />
+          <QuickCard
+            title="Settings"
+            body="Profile, reports, premium, and local data."
+            action="Manage"
+            onPress={() => setActiveTab("Settings")}
+            tone="leaf"
+            icon={Stethoscope}
+          />
+        </View>
+
+        <Card title="Production safety" icon={Stethoscope} tone="sky">
+          <MedicalNotice />
+        </Card>
+      </>
+    );
+  }
+
+  function renderReports() {
+    return (
+      <>
+        <MedicalNotice compact />
+        <Card title="Lab reports" icon={FileText} tone="sky">
+          <View style={styles.twoCol}>
+            <Field label="Hemoglobin g/dL" value={profile.hemoglobin} onChangeText={(v) => setProfileValue("hemoglobin", v)} keyboardType="decimal-pad" />
+            <Field label="Ferritin" value={profile.ferritin} onChangeText={(v) => setProfileValue("ferritin", v)} keyboardType="decimal-pad" />
+            <Field label="Vitamin B12" value={profile.b12} onChangeText={(v) => setProfileValue("b12", v)} keyboardType="numeric" />
+            <Field label="Vitamin D" value={profile.vitaminD} onChangeText={(v) => setProfileValue("vitaminD", v)} keyboardType="decimal-pad" />
+            <Field label="Fasting glucose" value={profile.glucose} onChangeText={(v) => setProfileValue("glucose", v)} keyboardType="numeric" />
+          </View>
+          <ChoiceGroup label="Blood pressure" options={BP} value={profile.bp} onChange={(v) => setProfileValue("bp", v)} />
+        </Card>
+        <Card title="Medical flags" icon={HeartPulse} tone="berry">
           <Toggle label="Gestational diabetes" active={profile.gestationalDiabetes} onPress={() => setProfileValue("gestationalDiabetes", !profile.gestationalDiabetes)} />
           <Toggle label="Thyroid disorder" active={profile.thyroid} onPress={() => setProfileValue("thyroid", !profile.thyroid)} />
           <Toggle label="Severe nausea or vomiting" active={profile.severeNausea} onPress={() => setProfileValue("severeNausea", !profile.severeNausea)} />
@@ -764,7 +1136,7 @@ export default function App() {
     if (validation.length > 0) {
       return (
         <>
-          <Card title="Complete profile first">
+          <Card title="Complete profile first" icon={NotebookTabs} tone="leaf">
             <Text style={styles.helperText}>
               Add the basic pregnancy profile before the app calculates BMI, weight trend, and meal guidance.
             </Text>
@@ -792,25 +1164,30 @@ export default function App() {
 
     return (
       <>
+        <MedicalNotice compact />
         <View style={styles.metricGrid}>
           <Metric label="BMI" value={`${plan.bmi.toFixed(1)} ${plan.category}`} />
           <Metric label="Weight trend" value={plan.trend} />
           <Metric label="Energy" value={plan.calorie} />
           <Metric label="Target gain" value={rangeText} />
         </View>
-        <Card title={`${plan.trimester} | Month ${plan.month}`}>
+        <Card title={`${plan.trimester} | Month ${plan.month}`} icon={CalendarDays} tone="berry">
           <View style={styles.tagWrap}>
             {plan.focus.map((item) => (
               <Text key={item} style={styles.tag}>{item}</Text>
             ))}
           </View>
         </Card>
-        <Card title={`${plan.mealPlan.label} day plan`}>
+        <Card title={`${plan.mealPlan.label} day plan`} icon={Utensils} tone="leaf">
           {plan.mealPlan.meals.map(([label, text]) => (
             <View key={label} style={styles.mealRow}>
               <View style={styles.mealHeader}>
-                <Text style={styles.mealLabel}>{label}</Text>
+                <View style={styles.mealLabelWrap}>
+                  <IconBubble icon={MEAL_ICONS[label] || Utensils} tone="leaf" size={15} />
+                  <Text style={styles.mealLabel}>{label}</Text>
+                </View>
                 <TouchableOpacity style={styles.swapButton} onPress={() => swapMeal(label)}>
+                  <RefreshCw size={13} color={COLORS.leaf} strokeWidth={2.5} />
                   <Text style={styles.swapButtonText}>Swap</Text>
                 </TouchableOpacity>
               </View>
@@ -819,7 +1196,7 @@ export default function App() {
           ))}
           <Text style={styles.helperText}>{plan.mealPlan.substitutions}</Text>
         </Card>
-        <Card title="Alerts and safety">
+        <Card title="Alerts and safety" icon={Stethoscope} tone="sky">
           {plan.alerts.map(([level, text]) => (
             <View key={text} style={[styles.alert, level === "urgent" && styles.alertUrgent]}>
               <Text style={styles.alertText}>{text}</Text>
@@ -833,7 +1210,8 @@ export default function App() {
   function renderSymptoms() {
     return (
       <>
-        <Card title="Symptom manager">
+        <MedicalNotice compact />
+        <Card title="Symptom manager" icon={HeartPulse} tone="berry">
           <ChoiceGroup
             label="Choose current symptom"
             options={[
@@ -850,7 +1228,7 @@ export default function App() {
             <Text style={styles.tipText}>{SYMPTOM_TIPS[symptom]}</Text>
           </View>
         </Card>
-        <Card title="Urgent signs">
+        <Card title="Urgent signs" icon={Stethoscope} tone="sky">
           {[
             "Heavy bleeding, fainting, chest pain, or severe breathlessness.",
             "Severe headache, vision changes, upper abdominal pain, or sudden swelling.",
@@ -873,21 +1251,30 @@ export default function App() {
 
     return (
       <>
-        <Card title={`Month ${plan.month} journey`}>
+        <Card title={`Month ${plan.month} journey`} icon={Baby} tone="berry">
           <View style={styles.journeyBlock}>
-            <Text style={styles.journeyLabel}>Baby growth</Text>
+            <View style={styles.journeyLabelRow}>
+              <Baby size={15} color={COLORS.berry} strokeWidth={2.4} />
+              <Text style={styles.journeyLabel}>Baby growth</Text>
+            </View>
             <Text style={styles.helperText}>{current.baby}</Text>
           </View>
           <View style={styles.journeyBlock}>
-            <Text style={styles.journeyLabel}>Mother focus</Text>
+            <View style={styles.journeyLabelRow}>
+              <HeartPulse size={15} color={COLORS.berry} strokeWidth={2.4} />
+              <Text style={styles.journeyLabel}>Mother focus</Text>
+            </View>
             <Text style={styles.helperText}>{current.mother}</Text>
           </View>
           <View style={styles.journeyBlock}>
-            <Text style={styles.journeyLabel}>Prepare this month</Text>
+            <View style={styles.journeyLabelRow}>
+              <ClipboardList size={15} color={COLORS.berry} strokeWidth={2.4} />
+              <Text style={styles.journeyLabel}>Prepare this month</Text>
+            </View>
             <Text style={styles.helperText}>{current.prep}</Text>
           </View>
         </Card>
-        <Card title={plan.month === 9 ? "Due-date focus" : `Coming next: month ${nextMonth}`}>
+        <Card title={plan.month === 9 ? "Due-date focus" : `Coming next: month ${nextMonth}`} icon={CalendarDays} tone="gold">
           <Text style={styles.helperText}>{plan.month === 9 ? "Keep meals light, safe, and easy to digest. Confirm hospital bag, doctor contacts, and postpartum food support." : next.mother}</Text>
         </Card>
       </>
@@ -898,7 +1285,8 @@ export default function App() {
     const groceries = GROCERY_BASE[profile.diet];
     return (
       <>
-        <Card title={`${MEAL_PLANS[profile.diet].label} grocery list`}>
+        <MedicalNotice compact />
+        <Card title={`${MEAL_PLANS[profile.diet].label} grocery list`} icon={ShoppingBasket} tone="gold">
           <Text style={styles.helperText}>
             Built from the current meal plan. Adjust for allergies, doctor instructions, and household preferences.
           </Text>
@@ -913,7 +1301,7 @@ export default function App() {
             </View>
           ))}
         </Card>
-        <Card title="Shopping reminders">
+        <Card title="Shopping reminders" icon={Stethoscope} tone="sky">
           {[
             "Prefer fresh, hygienic, well-cooked foods.",
             "Buy low-mercury fish only if non-vegetarian and doctor-approved.",
@@ -930,9 +1318,17 @@ export default function App() {
   }
 
   function renderTracker() {
+    const historyRows = Object.entries({
+      ...trackerHistory,
+      [todayKey()]: tracker
+    })
+      .sort(([a], [b]) => (a < b ? 1 : -1))
+      .slice(0, 7);
+
     return (
       <>
-        <Card title="Daily checklist">
+        <MedicalNotice compact />
+        <Card title="Daily checklist" icon={ClipboardList} tone="leaf">
           <Text style={styles.progressText}>{completed}/8 completed today</Text>
           {[
             ["water", "Water / fluids"],
@@ -952,10 +1348,25 @@ export default function App() {
             />
           ))}
         </Card>
-        <Card title="Doctor review reminder">
-          <Text style={styles.helperText}>
-            This app supports food planning only. Report interpretation, supplement doses, medicines, scans, and high-risk pregnancy decisions must stay with the OB/GYN.
-          </Text>
+        <Card title="7-day progress" icon={ChartNoAxesColumnIncreasing} tone="gold">
+          {historyRows.map(([dateKey, dayTracker]) => {
+            const count = Object.values(dayTracker || {}).filter(Boolean).length;
+            return (
+              <View key={dateKey} style={styles.historyRow}>
+                <View style={styles.historyDate}>
+                  <CalendarDays size={15} color={COLORS.gold} strokeWidth={2.5} />
+                  <Text style={styles.historyDateText}>{dateKey === todayKey() ? "Today" : friendlyDate(dateKey)}</Text>
+                </View>
+                <View style={styles.historyTrack}>
+                  <View style={[styles.historyFill, { width: `${(count / 8) * 100}%` }]} />
+                </View>
+                <Text style={styles.historyCount}>{count}/8</Text>
+              </View>
+            );
+          })}
+        </Card>
+        <Card title="Doctor review reminder" icon={Stethoscope} tone="sky">
+          <MedicalNotice />
         </Card>
         <TouchableOpacity style={styles.secondaryAction} onPress={resetLocalData}>
           <Text style={styles.secondaryActionText}>Reset saved profile and checklist</Text>
@@ -967,35 +1378,72 @@ export default function App() {
   function renderPremium() {
     return (
       <>
-        <Card title="Free plan">
+        <ImageBackground source={HERO_IMAGE} style={styles.comingSoonHero} imageStyle={styles.heroImage}>
+          <View style={styles.comingSoonOverlay}>
+            <View style={styles.comingSoonBadge}>
+              <Sparkles size={14} color={COLORS.gold} strokeWidth={2.8} />
+              <Text style={styles.comingSoonBadgeText}>Premium coming soon</Text>
+            </View>
+            <Text style={styles.comingSoonTitle}>Deeper pregnancy nutrition support</Text>
+            <Text style={styles.comingSoonText}>
+              The free app stays useful. Premium will add advanced planning, trend tracking, family support, and postpartum nutrition tools.
+            </Text>
+            <View style={styles.comingSoonMetaRow}>
+              <View style={styles.comingSoonMeta}>
+                <Text style={styles.comingSoonMetaValue}>6</Text>
+                <Text style={styles.comingSoonMetaLabel}>planned tools</Text>
+              </View>
+              <View style={styles.comingSoonMeta}>
+                <Text style={styles.comingSoonMetaValue}>0</Text>
+                <Text style={styles.comingSoonMetaLabel}>payments now</Text>
+              </View>
+            </View>
+          </View>
+        </ImageBackground>
+
+        <MedicalNotice compact />
+
+        <Card title="What stays free" icon={Check} tone="leaf">
           <Text style={styles.helperText}>
-            These features stay free so the app is useful from day one.
+            Core pregnancy nutrition support remains free in this version.
           </Text>
           <View style={styles.featureGrid}>
-            {FREE_FEATURES.map((feature) => (
+            {FREE_FEATURES.slice(0, 8).map((feature) => (
               <View key={feature} style={styles.freeFeature}>
+                <Check size={13} color={COLORS.leaf} strokeWidth={2.8} />
                 <Text style={styles.freeFeatureText}>{feature}</Text>
               </View>
             ))}
           </View>
         </Card>
 
-        <Card title="Premium prototype">
-          <Text style={styles.helperText}>
-            These are planned paid features. Payments are not enabled in this prototype.
-          </Text>
-          {PREMIUM_FEATURES.map((feature) => (
-            <View key={feature.title} style={styles.premiumFeature}>
-              <View style={styles.lockBadge}>
-                <Text style={styles.lockBadgeText}>Locked</Text>
+        <Card title="Premium roadmap" icon={Lock} tone="berry">
+          {PREMIUM_FEATURES.map((feature) => {
+            const FeatureIcon = feature.icon;
+            return (
+              <View key={feature.title} style={styles.premiumComingCard}>
+                <View style={styles.premiumComingIcon}>
+                  <FeatureIcon size={20} color={COLORS.berry} strokeWidth={2.5} />
+                </View>
+                <View style={styles.premiumComingCopy}>
+                  <View style={styles.premiumComingTitleRow}>
+                    <Text style={styles.premiumTitle}>{feature.title}</Text>
+                    <View style={styles.lockBadge}>
+                      <Lock size={11} color={COLORS.berry} strokeWidth={2.8} />
+                      <Text style={styles.lockBadgeText}>Soon</Text>
+                    </View>
+                  </View>
+                  <Text style={styles.helperText}>{feature.description}</Text>
+                </View>
               </View>
-              <Text style={styles.premiumTitle}>{feature.title}</Text>
-              <Text style={styles.helperText}>{feature.description}</Text>
-            </View>
-          ))}
+            );
+          })}
         </Card>
 
-        <Card title="Pricing prototype">
+        <Card title="Launch pricing prototype" icon={Lock} tone="gold">
+          <Text style={styles.helperText}>
+            Pricing is only a planning preview for future release. Store purchases are not connected in this build.
+          </Text>
           {PRICING_PROTOTYPE.map(([name, description, price]) => (
             <View key={name} style={styles.priceRow}>
               <View style={styles.priceCopy}>
@@ -1006,11 +1454,60 @@ export default function App() {
             </View>
           ))}
         </Card>
+
+        <Card title="Early access note" icon={Sparkles} tone="gold">
+          <Text style={styles.helperText}>
+            Premium is shown as a roadmap only. No subscription, payment, or purchase is enabled in this build.
+          </Text>
+          <TouchableOpacity style={styles.waitlistButton} onPress={() => setActiveTab("Home")}>
+            <Sparkles size={16} color="#ffffff" strokeWidth={2.8} />
+            <Text style={styles.waitlistButtonText}>Continue with free plan</Text>
+          </TouchableOpacity>
+        </Card>
+      </>
+    );
+  }
+
+  function renderSettings() {
+    return (
+      <>
+        <Card title="Account and setup" icon={Stethoscope} tone="leaf">
+          <View style={styles.moreGrid}>
+            {["Profile", "Reports", "Symptoms", "Premium"].map((tabName) => (
+              <TouchableOpacity
+                key={tabName}
+                style={styles.moreButton}
+                onPress={() => setActiveTab(tabName)}
+              >
+                {React.createElement(TAB_ICONS[tabName], {
+                  size: 16,
+                  color: COLORS.muted,
+                  strokeWidth: 2.4
+                })}
+                <Text style={styles.moreButtonText}>{tabName}</Text>
+              </TouchableOpacity>
+            ))}
+          </View>
+        </Card>
+
+        <Card title="Medical boundary" icon={Stethoscope} tone="sky">
+          <MedicalNotice />
+        </Card>
+
+        <Card title="Local data" icon={Lock} tone="berry">
+          <Text style={styles.helperText}>
+            Profile and report values are stored on this device. You can reset saved profile and checklist data here.
+          </Text>
+          <TouchableOpacity style={styles.secondaryAction} onPress={resetLocalData}>
+            <Text style={styles.secondaryActionText}>Reset saved profile and checklist</Text>
+          </TouchableOpacity>
+        </Card>
       </>
     );
   }
 
   const content = {
+    Home: renderHome,
     Profile: renderProfile,
     Reports: renderReports,
     Plan: renderPlan,
@@ -1018,7 +1515,8 @@ export default function App() {
     Grocery: renderGrocery,
     Symptoms: renderSymptoms,
     Tracker: renderTracker,
-    Premium: renderPremium
+    Premium: renderPremium,
+    Settings: renderSettings
   }[activeTab]();
 
   if (!hydrated) {
@@ -1033,29 +1531,55 @@ export default function App() {
     );
   }
 
-  if (!consentAccepted) {
+  if (!onboardingComplete) {
+    const canContinue = onboardingCanContinue();
     return (
       <SafeAreaView style={styles.safe}>
         <StatusBar barStyle="dark-content" backgroundColor={COLORS.paper} />
-        <ScrollView contentContainerStyle={styles.consentScreen}>
+        <View style={styles.onboardingHeader}>
           <Text style={styles.eyebrow}>Pregnancy Nutrition Coach</Text>
-          <Text style={styles.consentTitle}>Before we personalize your plan</Text>
-          <Text style={styles.consentBody}>
-            This app provides food planning support for pregnancy. It does not diagnose conditions, prescribe medicines, set supplement doses, replace an OB/GYN, or handle emergencies.
-          </Text>
-          <View style={styles.consentCard}>
-            {[
-              "Your profile and report values are saved securely on this device. Checklist progress is saved locally on this device.",
-              "Abnormal hemoglobin, ferritin, glucose, blood pressure, thyroid, vitamin, or pregnancy reports must be reviewed with your doctor.",
-              "Seek urgent care for heavy bleeding, fainting, chest pain, severe breathlessness, severe headache, vision changes, upper abdominal pain, sudden swelling, or vomiting that prevents fluids."
-            ].map((item) => (
-              <Text key={item} style={styles.consentItem}>{item}</Text>
-            ))}
+          <Text style={styles.onboardingTitle}>{ONBOARDING_STEPS[onboardingStep]}</Text>
+          <Text style={styles.subtitle}>Step {onboardingStep + 1} of {ONBOARDING_STEPS.length}</Text>
+          <View style={styles.progressTrack}>
+            <View style={[styles.progressFill, { width: `${((onboardingStep + 1) / ONBOARDING_STEPS.length) * 100}%` }]} />
           </View>
-          <TouchableOpacity style={styles.primaryAction} onPress={acceptConsent}>
-            <Text style={styles.primaryActionText}>I understand and continue</Text>
-          </TouchableOpacity>
+        </View>
+
+        <ScrollView style={styles.scroll} contentContainerStyle={styles.onboardingContent}>
+          {renderOnboardingStep()}
+          {onboardingStep === 2 && !canContinue ? (
+            <Card title="Required before continuing" icon={NotebookTabs} tone="berry">
+              {validationMessages(profile).map((item) => (
+                <View key={item} style={styles.alert}>
+                  <Text style={styles.alertText}>{item}</Text>
+                </View>
+              ))}
+            </Card>
+          ) : null}
         </ScrollView>
+
+        <View style={styles.onboardingFooter}>
+          {onboardingStep > 0 ? (
+            <TouchableOpacity style={styles.footerSecondary} onPress={() => setOnboardingStep((step) => Math.max(step - 1, 0))}>
+              <Text style={styles.secondaryActionText}>Back</Text>
+            </TouchableOpacity>
+          ) : null}
+          <TouchableOpacity
+            style={[styles.footerPrimary, !canContinue && styles.actionDisabled]}
+            disabled={!canContinue}
+            onPress={() => {
+              if (onboardingStep < ONBOARDING_STEPS.length - 1) {
+                setOnboardingStep((step) => step + 1);
+              } else {
+                completeOnboarding();
+              }
+            }}
+          >
+            <Text style={styles.primaryActionText}>
+              {onboardingStep === ONBOARDING_STEPS.length - 1 ? "Finish setup" : "Continue"}
+            </Text>
+          </TouchableOpacity>
+        </View>
       </SafeAreaView>
     );
   }
@@ -1064,38 +1588,43 @@ export default function App() {
     <SafeAreaView style={styles.safe}>
       <StatusBar barStyle="dark-content" backgroundColor={COLORS.paper} />
       <View style={styles.header}>
-        <Text style={styles.eyebrow}>Pregnancy Nutrition Coach</Text>
-        <Text style={styles.title}>Personalized nutrition</Text>
-        <Text style={styles.subtitle}>
-          {plan.trimester}, month {plan.month} • {MEAL_PLANS[profile.diet].label}
-        </Text>
+        <View style={styles.headerCopy}>
+          <Text style={styles.eyebrow}>Pregnancy Nutrition Coach</Text>
+          <Text style={styles.title}>{activeTab === "Home" ? "Your pregnancy food day" : activeTab}</Text>
+          <Text style={styles.subtitle}>
+            {plan.trimester}, month {plan.month} • {MEAL_PLANS[profile.diet].label}
+          </Text>
+        </View>
+        <Image source={HERO_IMAGE} style={styles.headerThumb} />
       </View>
-
-      <ScrollView
-        horizontal
-        showsHorizontalScrollIndicator={false}
-        style={styles.tabs}
-        contentContainerStyle={styles.tabsContent}
-      >
-        {["Profile", "Reports", "Plan", "Journey", "Grocery", "Symptoms", "Tracker", "Premium"].map((tabName) => (
-          <TouchableOpacity
-            key={tabName}
-            style={[styles.tab, activeTab === tabName && styles.tabActive]}
-            onPress={() => setActiveTab(tabName)}
-          >
-            <Text style={[styles.tabText, activeTab === tabName && styles.tabTextActive]}>
-              {tabName}
-            </Text>
-          </TouchableOpacity>
-        ))}
-      </ScrollView>
 
       <ScrollView style={styles.scroll} contentContainerStyle={styles.content}>
         {content}
         <Text style={styles.disclaimer}>
-          Food guidance only. Abnormal reports, medicines, and supplement doses must be reviewed with the OB/GYN.
+          {MEDICAL_NOTE}
         </Text>
       </ScrollView>
+
+      <View style={styles.bottomNav}>
+        {MAIN_TABS.map((tabName) => (
+          <TouchableOpacity
+            key={tabName}
+            style={styles.bottomItem}
+            onPress={() => setActiveTab(tabName)}
+          >
+            <View style={[styles.bottomIcon, activeTab === tabName && styles.bottomIconActive]}>
+              {React.createElement(TAB_ICONS[tabName], {
+                size: 16,
+                color: activeTab === tabName ? "#ffffff" : COLORS.gold,
+                strokeWidth: 2.5
+              })}
+            </View>
+            <Text style={[styles.bottomLabel, activeTab === tabName && styles.bottomLabelActive]}>
+              {tabName}
+            </Text>
+          </TouchableOpacity>
+        ))}
+      </View>
     </SafeAreaView>
   );
 }
@@ -1106,10 +1635,18 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.paper
   },
   header: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    gap: 12,
     paddingHorizontal: 18,
     paddingTop: 10,
     paddingBottom: 12,
     backgroundColor: COLORS.paper
+  },
+  headerCopy: {
+    flex: 1,
+    minWidth: 0
   },
   eyebrow: {
     color: COLORS.berry,
@@ -1119,10 +1656,10 @@ const styles = StyleSheet.create({
   },
   title: {
     color: COLORS.ink,
-    fontSize: 34,
+    fontSize: 24,
     fontWeight: "900",
     letterSpacing: 0,
-    lineHeight: 38,
+    lineHeight: 28,
     marginTop: 4
   },
   subtitle: {
@@ -1130,6 +1667,13 @@ const styles = StyleSheet.create({
     fontSize: 15,
     fontWeight: "700",
     marginTop: 6
+  },
+  headerThumb: {
+    width: 50,
+    height: 50,
+    borderRadius: 8,
+    borderWidth: 1,
+    borderColor: COLORS.line
   },
   tabs: {
     paddingHorizontal: 10,
@@ -1171,7 +1715,133 @@ const styles = StyleSheet.create({
   },
   content: {
     padding: 14,
-    paddingBottom: 36
+    paddingBottom: 104
+  },
+  hero: {
+    minHeight: 300,
+    overflow: "hidden",
+    justifyContent: "flex-end",
+    marginBottom: 12,
+    borderWidth: 1,
+    borderColor: COLORS.line,
+    backgroundColor: COLORS.softLeaf
+  },
+  heroImage: {
+    resizeMode: "cover"
+  },
+  heroOverlay: {
+    minHeight: 170,
+    justifyContent: "flex-end",
+    padding: 18,
+    backgroundColor: "rgba(31, 41, 51, 0.42)"
+  },
+  heroKicker: {
+    color: "#fff2d7",
+    fontSize: 12,
+    fontWeight: "900",
+    textTransform: "uppercase",
+    marginBottom: 5
+  },
+  heroTitle: {
+    color: "#ffffff",
+    fontSize: 30,
+    fontWeight: "900",
+    lineHeight: 34,
+    marginBottom: 8
+  },
+  heroText: {
+    color: "#fffdf8",
+    fontSize: 15,
+    fontWeight: "700",
+    lineHeight: 22
+  },
+  homeMetrics: {
+    flexDirection: "row",
+    gap: 10,
+    marginBottom: 12
+  },
+  quickGrid: {
+    flexDirection: "row",
+    flexWrap: "wrap",
+    gap: 10,
+    marginBottom: 12
+  },
+  quickCard: {
+    flexGrow: 1,
+    flexBasis: "47%",
+    minHeight: 154,
+    padding: 14,
+    borderWidth: 1,
+    justifyContent: "space-between"
+  },
+  quickCardleaf: {
+    backgroundColor: COLORS.softLeaf,
+    borderColor: "#c8ded2"
+  },
+  quickCardgold: {
+    backgroundColor: COLORS.softGold,
+    borderColor: "#ead8aa"
+  },
+  quickCardberry: {
+    backgroundColor: COLORS.softBerry,
+    borderColor: "#ead0db"
+  },
+  quickCardsky: {
+    backgroundColor: COLORS.softBlue,
+    borderColor: "#c8dce9"
+  },
+  quickTitle: {
+    color: COLORS.ink,
+    fontSize: 17,
+    fontWeight: "900",
+    marginBottom: 6
+  },
+  quickBody: {
+    color: COLORS.muted,
+    fontSize: 13,
+    fontWeight: "700",
+    lineHeight: 19
+  },
+  quickAction: {
+    color: COLORS.leaf,
+    fontSize: 13,
+    fontWeight: "900",
+    marginRight: 6
+  },
+  quickActionRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginTop: 12
+  },
+  medicalNotice: {
+    flexDirection: "row",
+    gap: 10,
+    borderWidth: 1,
+    borderColor: "#efcaca",
+    backgroundColor: "#fff6f6",
+    padding: 12,
+    marginBottom: 12
+  },
+  medicalNoticeCompact: {
+    padding: 10
+  },
+  medicalNoticeTextWrap: {
+    flex: 1,
+    minWidth: 0
+  },
+  medicalNoticeTitle: {
+    color: COLORS.danger,
+    fontSize: 13,
+    fontWeight: "900",
+    textTransform: "uppercase",
+    marginBottom: 4
+  },
+  medicalNoticeText: {
+    color: COLORS.ink,
+    fontSize: 13,
+    fontWeight: "700",
+    lineHeight: 19,
+    marginBottom: 4
   },
   loadingScreen: {
     flex: 1,
@@ -1183,6 +1853,79 @@ const styles = StyleSheet.create({
     fontSize: 28,
     fontWeight: "900",
     marginTop: 8
+  },
+  onboardingHeader: {
+    paddingHorizontal: 18,
+    paddingTop: 10,
+    paddingBottom: 12,
+    backgroundColor: COLORS.paper
+  },
+  onboardingTitle: {
+    color: COLORS.ink,
+    fontSize: 32,
+    fontWeight: "900",
+    lineHeight: 36,
+    marginTop: 4
+  },
+  progressTrack: {
+    height: 8,
+    backgroundColor: COLORS.line,
+    marginTop: 14,
+    overflow: "hidden"
+  },
+  progressFill: {
+    height: 8,
+    backgroundColor: COLORS.leaf
+  },
+  onboardingContent: {
+    padding: 14,
+    paddingBottom: 110
+  },
+  onboardingHero: {
+    minHeight: 380,
+    overflow: "hidden",
+    justifyContent: "flex-end",
+    marginBottom: 12,
+    borderWidth: 1,
+    borderColor: COLORS.line,
+    backgroundColor: COLORS.softLeaf
+  },
+  onboardingFooter: {
+    position: "absolute",
+    left: 12,
+    right: 12,
+    bottom: 12,
+    flexDirection: "row",
+    gap: 10,
+    padding: 10,
+    borderWidth: 1,
+    borderColor: COLORS.line,
+    backgroundColor: COLORS.surface,
+    shadowColor: "#1f2933",
+    shadowOffset: { width: 0, height: 10 },
+    shadowOpacity: 0.12,
+    shadowRadius: 18,
+    elevation: 8
+  },
+  footerSecondary: {
+    flex: 0.45,
+    minHeight: 50,
+    alignItems: "center",
+    justifyContent: "center",
+    borderWidth: 1,
+    borderColor: COLORS.line,
+    backgroundColor: COLORS.ivory
+  },
+  footerPrimary: {
+    flex: 1,
+    minHeight: 50,
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: COLORS.leaf,
+    paddingHorizontal: 14
+  },
+  actionDisabled: {
+    opacity: 0.45
   },
   consentScreen: {
     flexGrow: 1,
@@ -1251,11 +1994,69 @@ const styles = StyleSheet.create({
     padding: 14,
     marginBottom: 12
   },
+  cardHeader: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 8,
+    marginBottom: 12
+  },
+  iconBubble: {
+    width: 34,
+    height: 34,
+    alignItems: "center",
+    justifyContent: "center",
+    borderWidth: 1
+  },
+  iconBubbleleaf: {
+    backgroundColor: COLORS.softLeaf,
+    borderColor: "#c8ded2"
+  },
+  iconBubblegold: {
+    backgroundColor: COLORS.softGold,
+    borderColor: "#ead8aa"
+  },
+  iconBubbleberry: {
+    backgroundColor: COLORS.softBerry,
+    borderColor: "#ead0db"
+  },
+  iconBubblesky: {
+    backgroundColor: COLORS.softBlue,
+    borderColor: "#c8dce9"
+  },
+  moreGrid: {
+    flexDirection: "row",
+    flexWrap: "wrap",
+    gap: 8
+  },
+  moreButton: {
+    flexGrow: 1,
+    flexBasis: "45%",
+    minHeight: 44,
+    flexDirection: "row",
+    gap: 7,
+    alignItems: "center",
+    justifyContent: "center",
+    borderWidth: 1,
+    borderColor: COLORS.line,
+    backgroundColor: COLORS.ivory
+  },
+  moreButtonActive: {
+    borderColor: COLORS.leaf,
+    backgroundColor: COLORS.softLeaf
+  },
+  moreButtonText: {
+    color: COLORS.muted,
+    fontSize: 13,
+    fontWeight: "900"
+  },
+  moreButtonTextActive: {
+    color: COLORS.leaf
+  },
   cardTitle: {
     color: COLORS.leaf,
     fontSize: 17,
     fontWeight: "900",
-    marginBottom: 12
+    flex: 1
   },
   twoCol: {
     flexDirection: "row",
@@ -1369,7 +2170,12 @@ const styles = StyleSheet.create({
     color: "#77500f",
     fontSize: 12,
     fontWeight: "900",
-    textTransform: "uppercase",
+    textTransform: "uppercase"
+  },
+  metricHeader: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 6,
     marginBottom: 8
   },
   metricValue: {
@@ -1410,11 +2216,20 @@ const styles = StyleSheet.create({
     fontWeight: "900",
     flex: 1
   },
+  mealLabelWrap: {
+    flex: 1,
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 8
+  },
   swapButton: {
     minHeight: 32,
     borderWidth: 1,
     borderColor: COLORS.leaf,
     backgroundColor: COLORS.softLeaf,
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 5,
     justifyContent: "center",
     paddingHorizontal: 10
   },
@@ -1476,8 +2291,13 @@ const styles = StyleSheet.create({
     color: COLORS.berry,
     fontSize: 13,
     fontWeight: "900",
-    marginBottom: 4,
     textTransform: "uppercase"
+  },
+  journeyLabelRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 6,
+    marginBottom: 4
   },
   groceryGroup: {
     borderTopWidth: 1,
@@ -1509,6 +2329,9 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.softLeaf,
     borderWidth: 1,
     borderColor: "#c8ded2",
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 6,
     paddingHorizontal: 10,
     paddingVertical: 8
   },
@@ -1517,6 +2340,78 @@ const styles = StyleSheet.create({
     fontSize: 13,
     fontWeight: "900"
   },
+  comingSoonHero: {
+    minHeight: 310,
+    overflow: "hidden",
+    justifyContent: "flex-end",
+    marginBottom: 12,
+    borderWidth: 1,
+    borderColor: COLORS.line,
+    backgroundColor: COLORS.softBerry
+  },
+  comingSoonOverlay: {
+    minHeight: 310,
+    justifyContent: "flex-end",
+    padding: 18,
+    backgroundColor: "rgba(31, 41, 51, 0.48)"
+  },
+  comingSoonBadge: {
+    alignSelf: "flex-start",
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 6,
+    paddingHorizontal: 10,
+    paddingVertical: 7,
+    borderWidth: 1,
+    borderColor: "rgba(255, 242, 215, 0.62)",
+    backgroundColor: "rgba(31, 41, 51, 0.38)",
+    marginBottom: 12
+  },
+  comingSoonBadgeText: {
+    color: "#fff2d7",
+    fontSize: 12,
+    fontWeight: "900",
+    textTransform: "uppercase"
+  },
+  comingSoonTitle: {
+    color: "#ffffff",
+    fontSize: 29,
+    fontWeight: "900",
+    lineHeight: 34,
+    marginBottom: 8
+  },
+  comingSoonText: {
+    color: "#fffdf8",
+    fontSize: 15,
+    fontWeight: "700",
+    lineHeight: 22
+  },
+  comingSoonMetaRow: {
+    flexDirection: "row",
+    gap: 10,
+    marginTop: 16
+  },
+  comingSoonMeta: {
+    flex: 1,
+    minHeight: 68,
+    borderWidth: 1,
+    borderColor: "rgba(255, 255, 255, 0.3)",
+    backgroundColor: "rgba(255, 253, 248, 0.16)",
+    padding: 10,
+    justifyContent: "center"
+  },
+  comingSoonMetaValue: {
+    color: "#ffffff",
+    fontSize: 22,
+    fontWeight: "900"
+  },
+  comingSoonMetaLabel: {
+    color: "#fff2d7",
+    fontSize: 11,
+    fontWeight: "900",
+    textTransform: "uppercase",
+    marginTop: 2
+  },
   premiumFeature: {
     borderWidth: 1,
     borderColor: COLORS.line,
@@ -1524,9 +2419,40 @@ const styles = StyleSheet.create({
     padding: 12,
     marginTop: 10
   },
+  premiumComingCard: {
+    flexDirection: "row",
+    gap: 12,
+    borderWidth: 1,
+    borderColor: COLORS.line,
+    backgroundColor: COLORS.ivory,
+    padding: 12,
+    marginBottom: 10
+  },
+  premiumComingIcon: {
+    width: 42,
+    height: 42,
+    alignItems: "center",
+    justifyContent: "center",
+    borderWidth: 1,
+    borderColor: "#ead0db",
+    backgroundColor: COLORS.softBerry
+  },
+  premiumComingCopy: {
+    flex: 1,
+    minWidth: 0
+  },
+  premiumComingTitleRow: {
+    flexDirection: "row",
+    alignItems: "flex-start",
+    justifyContent: "space-between",
+    gap: 8
+  },
   lockBadge: {
     alignSelf: "flex-start",
     backgroundColor: COLORS.softBerry,
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 5,
     paddingHorizontal: 9,
     paddingVertical: 5,
     marginBottom: 8
@@ -1541,7 +2467,9 @@ const styles = StyleSheet.create({
     color: COLORS.ink,
     fontSize: 16,
     fontWeight: "900",
-    marginBottom: 4
+    lineHeight: 20,
+    marginBottom: 4,
+    flex: 1
   },
   priceRow: {
     borderWidth: 1,
@@ -1564,11 +2492,61 @@ const styles = StyleSheet.create({
     fontSize: 15,
     fontWeight: "900"
   },
+  waitlistButton: {
+    minHeight: 48,
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    gap: 8,
+    backgroundColor: COLORS.berry,
+    marginTop: 14,
+    paddingHorizontal: 14
+  },
+  waitlistButtonText: {
+    color: "#ffffff",
+    fontSize: 15,
+    fontWeight: "900"
+  },
   progressText: {
     color: COLORS.berry,
     fontSize: 16,
     fontWeight: "900",
     marginBottom: 12
+  },
+  historyRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 10,
+    minHeight: 42,
+    marginBottom: 8
+  },
+  historyDate: {
+    width: 78,
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 5
+  },
+  historyDateText: {
+    color: COLORS.ink,
+    fontSize: 13,
+    fontWeight: "900"
+  },
+  historyTrack: {
+    flex: 1,
+    height: 10,
+    backgroundColor: COLORS.line,
+    overflow: "hidden"
+  },
+  historyFill: {
+    height: 10,
+    backgroundColor: COLORS.gold
+  },
+  historyCount: {
+    width: 34,
+    color: COLORS.muted,
+    fontSize: 12,
+    fontWeight: "900",
+    textAlign: "right"
   },
   disclaimer: {
     color: COLORS.muted,
@@ -1577,5 +2555,49 @@ const styles = StyleSheet.create({
     lineHeight: 18,
     textAlign: "center",
     paddingHorizontal: 10
+  },
+  bottomNav: {
+    position: "absolute",
+    left: 12,
+    right: 12,
+    bottom: 12,
+    minHeight: 68,
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-around",
+    borderWidth: 1,
+    borderColor: COLORS.line,
+    backgroundColor: COLORS.surface,
+    shadowColor: "#1f2933",
+    shadowOffset: { width: 0, height: 10 },
+    shadowOpacity: 0.12,
+    shadowRadius: 18,
+    elevation: 8
+  },
+  bottomItem: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
+    minHeight: 62
+  },
+  bottomIcon: {
+    width: 26,
+    height: 26,
+    borderRadius: 13,
+    backgroundColor: COLORS.softGold,
+    alignItems: "center",
+    justifyContent: "center",
+    marginBottom: 3
+  },
+  bottomIconActive: {
+    backgroundColor: COLORS.leaf
+  },
+  bottomLabel: {
+    color: COLORS.muted,
+    fontSize: 11,
+    fontWeight: "900"
+  },
+  bottomLabelActive: {
+    color: COLORS.leaf
   }
 });
