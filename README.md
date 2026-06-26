@@ -2,6 +2,26 @@
 
 Cross-platform iOS and Android pregnancy nutrition coaching app built with Expo and React Native.
 
+Expo React Native pregnancy nutrition coach with meal planning, symptom support, and privacy-first local tracking.
+
+## Screenshots
+
+| Home dashboard | Premium roadmap |
+| --- | --- |
+| ![Home dashboard](docs/screenshots/home.jpg) | ![Premium coming soon roadmap](docs/screenshots/premium-coming-soon.jpg) |
+
+## Current Status
+
+- Product prototype is ready for public GitHub visibility and portfolio pinning.
+- Android and iOS Expo export smoke tests are configured through `npm run export:android` and `npm run export:ios`.
+- Store documentation drafts are included for Play Store listing, App Store submission, privacy policy, and production readiness.
+- Premium is shown as a coming-soon roadmap only. No subscription, payment, or purchase is enabled in this build.
+- Before a real store launch, replace placeholder business/contact details, host the privacy policy on a public HTTPS URL, test on real devices, and create signed EAS production builds.
+
+## Medical Boundary
+
+This app gives general pregnancy nutrition suggestions only. It is not medical advice, diagnosis, treatment, or a substitute for an OB/GYN, dietitian, or emergency care. Abnormal reports, medicines, supplement doses, scans, high-risk pregnancy decisions, diabetes, blood pressure concerns, thyroid issues, severe vomiting, bleeding, pain, or reduced fetal movement must be reviewed with a doctor.
+
 ## Features
 
 - Profile personalization by age, height, pre-pregnancy weight, current weight, pregnancy month, due date, pregnancy count, baby count, activity, allergies, and cuisine.
@@ -22,6 +42,20 @@ Cross-platform iOS and Android pregnancy nutrition coaching app built with Expo 
 - Safety alerts and doctor-review boundaries.
 - Premium coming-soon screen with roadmap cards, pricing prototype, and clear note that no subscription or payment is enabled.
 
+## GitHub Repo Metadata
+
+Suggested repo description:
+
+```text
+Expo React Native pregnancy nutrition coach with meal planning, symptom support, and privacy-first local tracking.
+```
+
+Suggested topics:
+
+```text
+expo, react-native, pregnancy, nutrition, meal-planning, health-tech, womens-health, mobile-app, privacy-first
+```
+
 ## Run
 
 ```sh
@@ -35,10 +69,6 @@ Then:
 - Press `i` for iOS simulator.
 - Press `a` for Android emulator.
 - Scan the QR code with Expo Go on a physical device.
-
-## Medical Boundary
-
-This app gives food guidance only. Abnormal reports, medicines, supplement doses, scans, and high-risk pregnancy decisions must be reviewed with an OB/GYN.
 
 ## Production Build
 
