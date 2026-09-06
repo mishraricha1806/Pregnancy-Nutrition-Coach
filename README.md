@@ -36,11 +36,12 @@ This app gives general pregnancy nutrition suggestions only. It is not medical a
 - Month-wise pregnancy journey with baby growth, mother focus, and preparation prompts.
 - Auto grocery list by diet category.
 - Symptom manager for nausea, acidity, constipation, swelling, and cravings.
+- Basic doctor appointment notes for questions, instructions, and reports to review.
 - Daily checklist for hydration, protein, iron, calcium, fruits, vegetables, prenatal supplement reminder, and movement.
 - 7-day checklist history.
 - Settings area for profile, reports, symptoms, premium, and local data reset.
 - Safety alerts and doctor-review boundaries.
-- Premium coming-soon screen with roadmap cards, pricing prototype, and clear note that no subscription or payment is enabled.
+- Premium coming-soon screen with roadmap cards, suggested pricing of ₹99/month, ₹799/year, and ₹1,499 lifetime early-user offer. No subscription or payment is enabled.
 
 ## GitHub Repo Metadata
 

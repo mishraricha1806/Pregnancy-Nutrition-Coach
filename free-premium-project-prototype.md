@@ -2,63 +2,74 @@
 
 ## Product Positioning
 
-Pregnancy Nutrition Coach is a pregnancy food-planning companion from month 1 to month 9. The free version should be useful every day. Premium should add convenience, deeper tracking, planning, and family support without making basic pregnancy nutrition inaccessible.
+Pregnancy Nutrition Coach is a pregnancy food-planning companion from month 1 to month 9. The free version should be useful enough to publish first. Premium should add personalization depth, exports, reminders, and convenience after the app has real users.
 
-## Free Version
+Priority: publish the free app first. This app has strong product value and a realistic future monetization path.
 
-Free features included in the current prototype:
+## Must-Have Free Features
 
-- First-run consent and medical disclaimer.
-- Personalized profile by age, height, pre-pregnancy weight, current weight, pregnancy month, pregnancy count, baby count, activity, diet, allergies, and cuisine.
-- Diet categories: vegetarian, non-vegetarian, eggetarian, and vegan.
-- Basic lab/report inputs: hemoglobin, ferritin, B12, vitamin D, glucose, BP, gestational diabetes, thyroid, and severe nausea.
-- BMI, pregnancy weight-gain status, trimester energy note, and target gain range.
-- Month-wise nutrition focus.
-- Full-day meal plan.
-- Meal swap ideas.
-- Grocery list by diet category.
-- Month-wise pregnancy journey.
-- Symptom tips for nausea, acidity, constipation, swelling, and cravings.
-- Daily checklist for hydration, protein, iron, calcium, fruits, vegetables, prenatal reminder, and movement.
-- Local profile/checklist storage and reset.
+| Feature | Free |
+| --- | --- |
+| Basic onboarding: due date, trimester, diet preference | Yes |
+| Week/month pregnancy stage view | Yes |
+| Basic trimester-wise nutrition tips | Yes |
+| Daily water checklist | Yes |
+| Basic symptom notes | Yes |
+| Basic meal suggestions | Limited |
+| Grocery list | Limited |
+| Food safety notes | Basic |
+| Doctor appointment notes | Basic |
+| Data reset/delete option | Yes |
+| Privacy policy and disclaimer | Yes |
 
-## Premium Version
+## Premium / Subscription Roadmap
 
-Premium features planned in the prototype:
+| Feature | Premium |
+| --- | --- |
+| Personalized weekly meal plan | Yes |
+| Indian vegetarian/non-vegetarian meal plans | Yes |
+| Trimester-specific nutrition plan | Yes |
+| Symptom-based food suggestions | Yes |
+| Grocery list auto-generated from meal plan | Yes |
+| Lab-aware guidance notes | Yes, carefully worded |
+| Doctor visit summary export | Yes |
+| PDF/export reports | Yes |
+| Advanced checklist | Yes |
+| Custom reminders | Yes |
+| Premium pregnancy food safety database | Yes |
 
-- 7-day smart meal planner with cuisine preference.
-- Grocery quantities and weekly shopping mode.
-- Report trend charts for hemoglobin, ferritin, B12, vitamin D, glucose, BP, and weight.
-- Condition-focused plans:
-  - Anemia-friendly
-  - Gestational diabetes-friendly
-  - Acidity-friendly
-  - Constipation-friendly
-  - High-BP cautious
-- Doctor visit kit:
-  - Appointment notes
-  - Questions to ask
-  - Report checklist
-  - Medicine/supplement timing reminders without prescribing
-- Family sharing:
-  - Partner/family grocery task list
-  - Daily support checklist
-  - Doctor visit prep reminders
-- Postpartum nutrition mode:
-  - Breastfeeding nutrition
-  - C-section recovery support
-  - Iron/protein recovery
-  - First 6-week meal support
+## Suggested Pricing
 
-## Pricing Prototype
+Pricing is for validation only. No payment, subscription, or in-app purchase is enabled in the current build.
 
-Suggested pricing for validation only:
+| Plan | Price |
+| --- | --- |
+| Monthly | ₹99 |
+| Yearly | ₹799 |
+| Lifetime early-user offer | ₹1,499 |
 
-- Free: current daily nutrition features.
-- Premium Monthly: INR 199/month.
-- Premium Yearly: INR 999/year.
+## Published-Level Checklist
 
-Final pricing should be tested with real users before launch.
+- App icon.
+- Splash screen.
+- Clean onboarding.
+- Pregnancy due-date setup.
+- Trimester/month calculation.
+- Nutrition dashboard.
+- Meal plan section.
+- Grocery list.
+- Symptom notes.
+- Doctor notes.
+- Reset/delete data.
+- Privacy policy.
+- No medical-treatment claims.
+- Screenshots for Play Store/App Store.
+- Crash-free basic testing.
+- Feedback/support email.
+
+## Safety Boundary
+
+The app must never diagnose, prescribe medicines, prescribe supplement doses, replace an OB/GYN, or handle emergencies. Premium features must keep the same boundary.
 
 ## Launch Phases
 
@@ -66,44 +77,16 @@ Final pricing should be tested with real users before launch.
 
 Goal: publish a useful, safe, local-only pregnancy nutrition planner.
 
-Include:
+Include the free checklist, privacy policy, Play Store data safety declaration, health app declaration if requested, and no payment integration.
 
-- Current free feature set.
-- Privacy policy.
-- Play Store data safety declaration.
-- Health app declaration.
-- No payment integration.
-
-### Phase 2: Premium Prototype
+### Phase 2: Premium Interest Test
 
 Goal: test willingness to pay without charging users.
 
-Include:
-
-- Premium tab with locked feature cards.
-- "Coming soon" or waitlist CTA.
-- Track user interest manually or through a compliant analytics setup later.
+Include the Premium tab with locked feature cards, coming-soon language, and no purchase flow.
 
 ### Phase 3: Paid Premium
 
-Goal: enable real subscription only after policy, legal, and user testing are complete.
+Goal: enable real subscriptions only after policy, legal, billing, and user testing are complete.
 
-Include:
-
-- Google Play Billing.
-- Subscription screen.
-- Restore purchases.
-- Clear cancellation language.
-- Premium entitlement checks.
-- Updated privacy policy and Play Console declarations.
-
-## Safety Boundary
-
-The app must never diagnose, prescribe medicines, prescribe supplement doses, replace an OB/GYN, or handle emergencies. Premium features must keep the same boundary.
-
-## Production Notes
-
-- Keep basic nutrition guidance free.
-- Keep all abnormal report interpretation conservative.
-- Always recommend OB/GYN review for abnormal reports, severe symptoms, high-risk pregnancy, or medication/supplement decisions.
-- If analytics, accounts, cloud sync, ads, or subscriptions are added later, update the privacy policy and Play Store Data Safety form before release.
+Include Google Play Billing / Apple in-app purchases, restore purchases, clear cancellation language, premium entitlement checks, and updated privacy disclosures.

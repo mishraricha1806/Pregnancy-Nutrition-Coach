@@ -36,7 +36,7 @@ EAS will ask for Apple Developer credentials and signing setup on the first iOS 
 - Category: Health & Fitness
 - Age rating: complete Apple's questionnaire honestly. The app contains health/nutrition guidance but no explicit content.
 - Price: Free for the first version.
-- In-app purchases: Not enabled in the current build. Premium is a coming-soon roadmap and pricing prototype screen only.
+- In-app purchases: Not enabled in the current build. Premium is a coming-soon roadmap and pricing prototype screen only. Suggested future pricing is ₹99/month, ₹799/year, and ₹1,499 lifetime early-user offer.
 
 ## Subtitle
 
@@ -59,6 +59,7 @@ Free features include:
 - BMI and pregnancy weight-gain guidance.
 - Report-aware food alerts for iron, B12, vitamin D, glucose, and blood pressure.
 - Symptom tips for nausea, acidity, constipation, swelling, and cravings.
+- Basic doctor appointment notes for questions, instructions, and reports to review.
 - Daily checklist for hydration, protein, iron, calcium, fruits, vegetables, prenatal reminder, and movement.
 - Clear doctor-review reminders and urgent-symptom warnings.
 
@@ -112,7 +113,8 @@ Suggested screenshot flow:
 3. Plan page with meal plan and swaps.
 4. Grocery list.
 5. Journey page.
-6. Premium coming-soon roadmap page.
+6. Doctor notes page.
+7. Premium coming-soon roadmap page.
 
 ## Review Notes
 

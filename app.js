@@ -74,6 +74,7 @@ const TAB_ICONS = {
   Profile: NotebookTabs,
   Reports: FileText,
   Symptoms: HeartPulse,
+  "Doctor Notes": NotebookTabs,
   Premium: Sparkles,
   Settings: Stethoscope
 };
@@ -118,7 +119,11 @@ const INITIAL_PROFILE = {
   thyroid: false,
   severeNausea: false,
   allergies: "",
-  cuisine: "Indian"
+  cuisine: "Indian",
+  doctorAppointmentDate: "",
+  doctorQuestions: "",
+  doctorAdvice: "",
+  doctorReportsToReview: ""
 };
 
 const SAMPLE_PROFILE = {
@@ -426,55 +431,82 @@ const GROCERY_BASE = {
 };
 
 const FREE_FEATURES = [
-  "Personalized pregnancy profile",
-  "Diet categories: veg, non-veg, eggetarian, vegan",
-  "Month-wise meal plan",
-  "Meal swap ideas",
-  "Basic report-aware alerts",
-  "Grocery list",
-  "Journey by pregnancy month",
-  "Symptom tips",
-  "Daily checklist",
-  "Local data storage"
+  "Basic onboarding: due date, trimester, diet preference",
+  "Week/month pregnancy stage view",
+  "Basic trimester-wise nutrition tips",
+  "Daily water checklist",
+  "Basic symptom notes",
+  "Limited basic meal suggestions",
+  "Limited grocery list",
+  "Basic food safety notes",
+  "Basic doctor appointment notes",
+  "Data reset/delete option",
+  "Privacy policy and disclaimer"
 ];
 
 const PREMIUM_FEATURES = [
   {
-    title: "7-day smart meal planner",
-    description: "Auto-build a weekly meal calendar with swaps, leftovers, grocery quantities, and cuisine preference.",
+    title: "Personalized weekly meal plan",
+    description: "Auto-build a full week with swaps, leftovers, portion prompts, and cuisine preference.",
     icon: CalendarDays
   },
   {
-    title: "Report trend charts",
-    description: "Track hemoglobin, ferritin, B12, vitamin D, glucose, BP, and weight changes over time.",
-    icon: ChartNoAxesColumnIncreasing
+    title: "Indian veg/non-veg meal plans",
+    description: "Deeper Indian vegetarian, non-vegetarian, eggetarian, and vegan weekly meal libraries.",
+    icon: Utensils
   },
   {
-    title: "Condition-focused plans",
-    description: "Separate anemia-friendly, GDM-friendly, acidity-friendly, constipation-friendly, and high-BP cautious plans.",
+    title: "Trimester-specific nutrition plan",
+    description: "More detailed trimester goals, nutrient focus, and weekly food rhythm from month 1 to due date.",
+    icon: Baby
+  },
+  {
+    title: "Symptom-based food suggestions",
+    description: "Food ideas for nausea, acidity, constipation, swelling, cravings, and low appetite.",
     icon: HeartPulse
   },
   {
-    title: "Family sharing",
-    description: "A simple partner/family view with grocery tasks, hydration reminders, and doctor-visit prep.",
+    title: "Auto grocery from meal plan",
+    description: "Generate weekly grocery quantities from selected meals, household size, and diet type.",
     icon: ShoppingBasket
   },
   {
-    title: "Doctor visit kit",
-    description: "Appointment notes, questions to ask, report checklist, and supplement reminder timing.",
+    title: "Lab-aware guidance notes",
+    description: "Carefully worded guidance notes for hemoglobin, ferritin, B12, vitamin D, glucose, BP, and weight trends.",
+    icon: ChartNoAxesColumnIncreasing
+  },
+  {
+    title: "Doctor visit summary export",
+    description: "Prepare a simple summary of notes, symptoms, checklist progress, and reports to discuss with the doctor.",
     icon: Stethoscope
   },
   {
-    title: "Postpartum nutrition mode",
-    description: "Breastfeeding, C-section recovery, iron/protein recovery, and first 6-week meal support.",
-    icon: Baby
+    title: "PDF/export reports",
+    description: "Export meal plans, grocery lists, tracker history, and doctor visit summaries.",
+    icon: FileText
+  },
+  {
+    title: "Advanced checklist",
+    description: "Track protein, iron, calcium, fiber, movement, symptoms, supplements, and doctor-approved goals.",
+    icon: ClipboardList
+  },
+  {
+    title: "Custom reminders",
+    description: "Reminder setup for water, meals, grocery prep, appointments, and doctor-prescribed supplement timing.",
+    icon: Sparkles
+  },
+  {
+    title: "Premium food safety database",
+    description: "Searchable pregnancy food safety notes for common Indian foods, packaged foods, and eating out.",
+    icon: Lock
   }
 ];
 
 const PRICING_PROTOTYPE = [
   ["Free", "Daily pregnancy nutrition basics", "Current app features"],
-  ["Premium Monthly", "Advanced planning and tracking", "Suggested: INR 199/month"],
-  ["Premium Yearly", "Best value for full pregnancy journey", "Suggested: INR 999/year"]
+  ["Premium Monthly", "Advanced planning and tracking", "Suggested: ₹99/month"],
+  ["Premium Yearly", "Best value for full pregnancy journey", "Suggested: ₹799/year"],
+  ["Lifetime early-user offer", "One-time early supporter access", "Suggested: ₹1,499"]
 ];
 
 const MEDICAL_NOTE =
@@ -646,17 +678,19 @@ function calculatePlan(profile) {
   };
 }
 
-function Field({ label, value, onChangeText, keyboardType = "default", placeholder }) {
+function Field({ label, value, onChangeText, keyboardType = "default", placeholder, multiline = false, fullWidth = false }) {
   return (
-    <View style={styles.field}>
+    <View style={[styles.field, fullWidth && styles.fieldFull]}>
       <Text style={styles.label}>{label}</Text>
       <TextInput
-        style={styles.input}
+        style={[styles.input, multiline && styles.textArea]}
         value={value}
         onChangeText={onChangeText}
         keyboardType={keyboardType}
         placeholder={placeholder}
         placeholderTextColor="#91a0aa"
+        multiline={multiline}
+        textAlignVertical={multiline ? "top" : "center"}
       />
     </View>
   );
@@ -1092,6 +1126,14 @@ export default function App() {
             icon={HeartPulse}
           />
           <QuickCard
+            title="Doctor Notes"
+            body="Appointment prep, questions, and report follow-up."
+            action="Write notes"
+            onPress={() => setActiveTab("Doctor Notes")}
+            tone="gold"
+            icon={NotebookTabs}
+          />
+          <QuickCard
             title="Settings"
             body="Profile, reports, premium, and local data."
             action="Manage"
@@ -1236,6 +1278,61 @@ export default function App() {
             "Reduced fetal movement after the stage when movement is being tracked."
           ].map((item) => (
             <View key={item} style={[styles.alert, styles.alertUrgent]}>
+              <Text style={styles.alertText}>{item}</Text>
+            </View>
+          ))}
+        </Card>
+      </>
+    );
+  }
+
+  function renderDoctorNotes() {
+    return (
+      <>
+        <MedicalNotice compact />
+        <Card title="Doctor appointment notes" icon={NotebookTabs} tone="sky">
+          <Text style={styles.helperText}>
+            Keep a simple visit prep note. Use this to remember what to ask and what your doctor advised.
+          </Text>
+          <Field
+            label="Next appointment date"
+            value={profile.doctorAppointmentDate}
+            onChangeText={(v) => setProfileValue("doctorAppointmentDate", v)}
+            placeholder="DD/MM/YYYY"
+            fullWidth
+          />
+          <Field
+            label="Questions to ask"
+            value={profile.doctorQuestions}
+            onChangeText={(v) => setProfileValue("doctorQuestions", v)}
+            placeholder="Example: iron dose, nausea, scan/report follow-up"
+            multiline
+            fullWidth
+          />
+          <Field
+            label="Doctor advice / instructions"
+            value={profile.doctorAdvice}
+            onChangeText={(v) => setProfileValue("doctorAdvice", v)}
+            placeholder="Write only what your doctor has advised."
+            multiline
+            fullWidth
+          />
+          <Field
+            label="Reports to review"
+            value={profile.doctorReportsToReview}
+            onChangeText={(v) => setProfileValue("doctorReportsToReview", v)}
+            placeholder="Hb, ferritin, vitamin D, glucose, BP, scan..."
+            multiline
+            fullWidth
+          />
+        </Card>
+        <Card title="Visit reminder" icon={Stethoscope} tone="berry">
+          {[
+            "Carry current medicines, supplements, allergies, reports, and scan notes.",
+            "Ask before changing iron, calcium, thyroid medicine, aspirin, insulin, or any supplement dose.",
+            "Use this app note as preparation only, not as a medical record or prescription."
+          ].map((item) => (
+            <View key={item} style={styles.alert}>
               <Text style={styles.alertText}>{item}</Text>
             </View>
           ))}
@@ -1390,7 +1487,7 @@ export default function App() {
             </Text>
             <View style={styles.comingSoonMetaRow}>
               <View style={styles.comingSoonMeta}>
-                <Text style={styles.comingSoonMetaValue}>6</Text>
+                <Text style={styles.comingSoonMetaValue}>{PREMIUM_FEATURES.length}</Text>
                 <Text style={styles.comingSoonMetaLabel}>planned tools</Text>
               </View>
               <View style={styles.comingSoonMeta}>
@@ -1408,7 +1505,7 @@ export default function App() {
             Core pregnancy nutrition support remains free in this version.
           </Text>
           <View style={styles.featureGrid}>
-            {FREE_FEATURES.slice(0, 8).map((feature) => (
+            {FREE_FEATURES.map((feature) => (
               <View key={feature} style={styles.freeFeature}>
                 <Check size={13} color={COLORS.leaf} strokeWidth={2.8} />
                 <Text style={styles.freeFeatureText}>{feature}</Text>
@@ -1473,7 +1570,7 @@ export default function App() {
       <>
         <Card title="Account and setup" icon={Stethoscope} tone="leaf">
           <View style={styles.moreGrid}>
-            {["Profile", "Reports", "Symptoms", "Premium"].map((tabName) => (
+            {["Profile", "Reports", "Symptoms", "Doctor Notes", "Premium"].map((tabName) => (
               <TouchableOpacity
                 key={tabName}
                 style={styles.moreButton}
@@ -1514,6 +1611,7 @@ export default function App() {
     Journey: renderJourney,
     Grocery: renderGrocery,
     Symptoms: renderSymptoms,
+    "Doctor Notes": renderDoctorNotes,
     Tracker: renderTracker,
     Premium: renderPremium,
     Settings: renderSettings
@@ -2068,6 +2166,9 @@ const styles = StyleSheet.create({
     flexBasis: "47%",
     marginBottom: 12
   },
+  fieldFull: {
+    flexBasis: "100%"
+  },
   label: {
     color: COLORS.muted,
     fontSize: 13,
@@ -2083,6 +2184,12 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: "700",
     paddingHorizontal: 11
+  },
+  textArea: {
+    minHeight: 96,
+    paddingTop: 10,
+    paddingBottom: 10,
+    lineHeight: 22
   },
   choiceBlock: {
     marginBottom: 12

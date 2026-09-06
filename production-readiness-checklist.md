@@ -16,6 +16,7 @@
 - Privacy policy draft.
 - Android and iOS bundle smoke tests.
 - Journey, meal swap, and grocery list engagement features.
+- Basic doctor appointment notes for questions, instructions, and reports to review.
 - Premium coming-soon screen with roadmap cards, pricing prototype, and clear note that no subscription or payment is enabled.
 - Visual home dashboard, generated hero image asset, and bottom navigation.
 - Multi-step onboarding.
@@ -35,6 +36,25 @@
 - Complete content rating questionnaire.
 - Upload screenshots and feature graphic.
 - Run production build with EAS and upload the generated `.aab`.
+
+## Published-Level Checklist
+
+- App icon.
+- Splash screen.
+- Clean onboarding.
+- Pregnancy due-date setup.
+- Trimester/month calculation.
+- Nutrition dashboard.
+- Meal plan section.
+- Grocery list.
+- Symptom notes.
+- Doctor notes.
+- Reset/delete data.
+- Privacy policy.
+- No medical-treatment claims.
+- Screenshots for Play Store/App Store.
+- Crash-free basic testing.
+- Feedback/support email.
 
 ## Build Command
 

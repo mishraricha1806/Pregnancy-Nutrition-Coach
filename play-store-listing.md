@@ -24,9 +24,10 @@ Features:
 - Month-wise pregnancy journey with baby growth, mother focus, and preparation prompts.
 - Lab-aware food alerts for iron, B12, vitamin D, glucose, and blood pressure.
 - Symptom tips for nausea, acidity, constipation, swelling, and cravings.
+- Basic doctor appointment notes for questions, instructions, and reports to review.
 - Daily checklist for hydration, protein, iron, calcium, fruits, vegetables, prenatal reminder, and movement.
 - 7-day checklist progress history.
-- Free app with premium coming-soon roadmap. No subscription or payment is enabled in this build.
+- Free app with premium coming-soon roadmap. Suggested future pricing is ₹99/month, ₹799/year, and ₹1,499 lifetime early-user offer. No subscription or payment is enabled in this build.
 - Clear doctor-review reminders and urgent-symptom warnings.
 
 Medical disclaimer:
